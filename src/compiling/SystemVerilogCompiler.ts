@@ -3,14 +3,16 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import { DocumentCompiler } from './DocumentCompiler';
 import { VerilatorCompiler } from './VerilatorCompiler';
 import { VCSCompiler } from './VCSCompiler';
+import { VeribleCompiler } from './VeribleCompiler';
 
 /* defines supported simulators/compilers */
 export enum compilerType {
     Verilator = 1,
-    VCS = 2
+    VCS = 2,
+    Verible = 3
 }
 
-/* 
+/*
     SystemVerilog Compiler handles functionality for compiling documents using the supported simulators.
     Used by the LSP's `connection` to handle getting `Diagnostics` for `documents`
 */
@@ -52,6 +54,14 @@ export class SystemVerilogCompiler {
             );
         } else if (type === compilerType.VCS) {
             this.compiler = new VCSCompiler(
+                this.connection,
+                this.documents,
+                this.workspaceRootPath,
+                this.configurations,
+                this.compilerConfigurationsKeys
+            );
+        } else if (type === compilerType.Verible) {
+            this.compiler = new VeribleCompiler(
                 this.connection,
                 this.documents,
                 this.workspaceRootPath,

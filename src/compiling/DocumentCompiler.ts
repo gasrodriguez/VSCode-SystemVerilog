@@ -6,7 +6,7 @@ import { getPathFromUri } from '../utils/common';
 import { isSystemVerilogDocument, isVerilogDocument, getLineRange } from '../utils/server';
 import { DiagnosticData } from './DiagnosticData';
 
-/* 
+/*
     DocumentCompiler is an abstract class that defines the common behavior of Document compilers.
 */
 export abstract class DocumentCompiler {
@@ -113,7 +113,7 @@ export abstract class DocumentCompiler {
         collection: Map<string, Diagnostic[]>
     ): void {
         let diagnostic: Diagnostic;
-        let diagnostics;
+        let diagnostics: Diagnostic[];
 
         if (diagnosticData.filePath.localeCompare(getPathFromUri(compiledDocument.uri, this.workspaceRootPath)) === 0) {
             // Set `diagnostic`'s range
@@ -142,8 +142,6 @@ export abstract class DocumentCompiler {
 
             if (filteredUris.length === 1) {
                 const uri = filteredUris[0];
-
-                const document: TextDocument = this.documents.get(uri);
 
                 const range: Range = getLineRange(
                     diagnosticData.line,
